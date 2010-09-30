@@ -7,6 +7,7 @@
 # Simon Josi josi+puppet(at)puzzle.ch
 # forked by Camptocamp SA
 # Marc Fournier, marc.fournier(at)camptocamp.com
+# Christian Kaenzig, christian.kaenzig(at)camptocamp.com
 # 
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -21,7 +22,10 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-# modules_dir { \"subversion\": }
+
+import "classes/*.pp"
+import "definitions/*.pp"
+
 
 #
 # == Class: subversion
@@ -39,35 +43,3 @@ class subversion {
     }
 }
 
-class subversion::base {
-    package{'subversion':
-        ensure => present,
-    }
-
-    file { '/etc/subversion':
-        ensure  => directory,
-        require => Package['subversion'],
-    }
-
-    file { "/usr/share/augeas/lenses/contrib/subversion.aug":
-        ensure => present,
-        source => "puppet:///subversion/subversion.aug",
-    }
-
-    # only recent version of svn support the "store-password" option.
-    augeas { "avoid svn password saving":
-        load_path => "/usr/share/augeas/lenses/contrib/",
-        context   => "/files/etc/subversion/config/auth/",
-        require   => [File["/usr/share/augeas/lenses/contrib/subversion.aug"], File["/etc/subversion"]],
-        changes   => $lsbdistcodename ? {
-            default => "set store-auth-creds no",
-            Tikanga => "set store-password no",
-            lenny   => "set store-password no",
-        },
-    }
-}
-class subversion::debian inherits subversion::base {
-    package {'subversion-tools': 
-        ensure => present;
-    }
-}
