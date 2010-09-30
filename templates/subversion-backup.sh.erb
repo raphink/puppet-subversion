@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for repo in /srv/svn/repos/
+do
+  svn-hot-backup $repo <%= $subversion_backup %>
+done
+
