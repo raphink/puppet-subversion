@@ -7,7 +7,9 @@ consitent backups each night.
 
 Parameters:
  $subversion_backupdir:
-   this global variable is used to set the backup directory
+   global variable that sets the backup directory
+ $subversion_dir:
+   global variable that sets the base repositories directory
 
 */
 class subversion::backup {
@@ -15,13 +17,20 @@ class subversion::backup {
   if ( ! $subversion_backupdir ) {
     $subversion_backupdir = "/var/backups/subversion"
   }
+  if ( ! $subversion_dir ) {
+    $subversion_dir = "/srv/svn"
+  }
+
+  case $lsbdistid {
+    "Debian", "Ubuntu": { $hotbackupname = "svn-hot-backup" }
+    "RedHat", "CentOS": { $hotbackupname = "hot-backup.py" }
+  }
 
   file {$subversion_backupdir:
     ensure  => directory,
     owner   => root,
     group   => root,
     mode    => 755,
-    require => [Package["subversion-tools"]],
   }
 
   file { "/usr/local/bin/subversion-backup.sh":
@@ -30,7 +39,7 @@ class subversion::backup {
     group   => root,
     mode    => 755,
     content => template("subversion/subversion-backup.sh.erb"),
-    require => File[$subversion_backupdir],
+    require => [ Package["subversion-tools"], File[$subversion_backupdir] ],
   }
 
   cron { "subversion-backup":
