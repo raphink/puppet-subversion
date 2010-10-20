@@ -42,4 +42,12 @@ define subversion::svnrepo(
         group   => $group ? { '' => undef, default => $group },
         mode    => $mode  ? { '' => undef, default => $mode },
     }
+
+    if $ensure == "absent" {
+      File["$repository_path"] {
+        force   => true,
+        recurse => true,
+        purge   => true,
+      }
+    }
 }
