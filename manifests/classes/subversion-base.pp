@@ -20,9 +20,8 @@ class subversion::base {
         context   => "/files/etc/subversion/config/auth/",
         require   => [File["/usr/share/augeas/lenses/contrib/subversion.aug"], File["/etc/subversion"]],
         changes   => $lsbdistcodename ? {
-            default => "set store-auth-creds no",
-            Tikanga => "set store-password no",
-            lenny   => "set store-password no",
+            default                     => "set store-auth-creds no",
+            /^(Tikanga|lenny|squeeze)$/ => "set store-password no",
         },
     }
 }
