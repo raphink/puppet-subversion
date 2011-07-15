@@ -3,7 +3,7 @@
 cd <%= subversion_dir %>
 for repo in *; do
   VER=`svnlook youngest <%= subversion_dir %>/$repo`
-  if ! [[ -e <%= subversion_backupdir %>/$repo-$VER.tar.bz2 ]]; then
+  if ! [ -e <%= subversion_backupdir %>/$repo-$VER.tar.bz2 ]; then
     <%= hotbackupname %>  <%= subversion_dir %>/$repo <%= subversion_backupdir %> > /dev/null
     cd <%= subversion_backupdir %>
     for f in  `find <%= subversion_backupdir %> -regex ".*/$repo-[-0-9]+\.tar.bz2"`; do
