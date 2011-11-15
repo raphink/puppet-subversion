@@ -23,10 +23,6 @@
 #
 
 
-import "classes/*.pp"
-import "definitions/*.pp"
-
-
 #
 # == Class: subversion
 #
