@@ -11,7 +11,7 @@ class subversion::base {
 
     file { "/usr/share/augeas/lenses/contrib/subversion.aug":
         ensure => present,
-        source => "puppet:///subversion/subversion.aug",
+        source => "puppet:///modules/subversion/subversion.aug",
     }
 
     # only recent version of svn support the "store-password" option.
