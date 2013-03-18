@@ -9,8 +9,9 @@ class subversion::base {
     }
 
     augeas::lens {'subversion':
-        ensure => present,
+        ensure      => present,
         lens_source => 'puppet:///modules/subversion/subversion.aug',
+        stock_since => '1.0.0',
     }
 
     # only recent version of svn support the "store-password" option.
