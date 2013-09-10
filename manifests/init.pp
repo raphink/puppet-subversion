@@ -35,7 +35,7 @@
 class subversion (
   $backupdir = $subversion::params::backupdir,
   $dir = $subversion::params::dir,
-) inherits ::subversion::params::backupdir {
+) inherits ::subversion::params {
 
   case $::osfamily {
     'Debian': { include ::subversion::debian }
