@@ -32,10 +32,14 @@
 #
 # For more details, have a look at: http://svnbook.red-bean.com/nightly/en/svn.advanced.confarea.html#svn.advanced.confarea.opts.config
 #
-class subversion {
-    case $operatingsystem {
-        debian,ubuntu: { include subversion::debian }
-        default: { include subversion::base }
-    }
+class subversion (
+  $backupdir = $subversion::params::backupdir,
+  $dir = $subversion::params::dir,
+) inherits ::subversion::params {
+
+  case $::osfamily {
+    'Debian': { include ::subversion::debian }
+    default: { include ::subversion::base }
+  }
 }
 
