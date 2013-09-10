@@ -2,11 +2,11 @@
 # forked by Puzzle ITC
 # Marcel Härry haerry+puppet(at)puzzle.ch
 # Simon Josi josi+puppet(at)puzzle.ch
-# 
+#
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
 # copyright notice and this permission notice appear in all copies.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 # WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -21,30 +21,34 @@ define subversion::svnrepo(
     $path='/srv/svn',
     $owner='',
     $group='',
-    $mode=''
+    $mode='',
 ) {
     include subversion
 
     $repository_path = "${path}/${name}"
 
     if $ensure == 'present' {
-      exec { "create-svn-$name":
-          command => "/usr/bin/svnadmin create $repository_path",
-          creates => "$repository_path/db",
+      exec { "create-svn-${name}":
+          command => "/usr/bin/svnadmin create ${repository_path}",
+          creates => "${repository_path/db}",
           user    => $owner,
-          require => [ File["$repository_path"], Package['subversion'], File[$path] ],
+          require => [
+            File[$repository_path],
+            Package['subversion'],
+            File[$path]
+            ],
       }
     }
 
-    file{"$repository_path":
+    file{$repository_path:
         ensure  => $ensure ? {'absent' => 'absent', default => directory},
         owner   => $owner ? { '' => undef, default => $owner },
         group   => $group ? { '' => undef, default => $group },
         mode    => $mode  ? { '' => undef, default => $mode },
     }
 
-    if $ensure == "absent" {
-      File["$repository_path"] {
+    if $ensure == 'absent' {
+      File[$repository_path] {
         force   => true,
         recurse => true,
         purge   => true,
