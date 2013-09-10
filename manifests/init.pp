@@ -33,7 +33,7 @@
 # For more details, have a look at: http://svnbook.red-bean.com/nightly/en/svn.advanced.confarea.html#svn.advanced.confarea.opts.config
 #
 class subversion (
-  $backupdir = subversion::params::backupdir,
+  $backupdir = $subversion::params::backupdir,
   $dir = $subversion::params::dir,
 ) inherits ::subversion::params::backupdir {
 
