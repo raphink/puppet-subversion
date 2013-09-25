@@ -20,7 +20,7 @@ class subversion::backup (
   validate_absolute_path($backupdir)
   validate_absolute_path($dir)
 
-  $hotbackupname = ? $::osfamily {
+  $hotbackupname = $::osfamily ? {
     'Debian' => 'svn-hot-backup',
     'RedHat' => 'hot-backup.py',
   }
