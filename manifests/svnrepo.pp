@@ -30,7 +30,7 @@ define subversion::svnrepo(
     if $ensure == 'present' {
       exec { "create-svn-${name}":
           command => "/usr/bin/svnadmin create ${repository_path}",
-          creates => "${repository_pat}/db",
+          creates => "${repository_path}/db",
           user    => $owner,
           require => [
             File[$repository_path],
