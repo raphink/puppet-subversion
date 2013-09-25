@@ -12,17 +12,13 @@ Parameters:
    global variable that sets the base repositories directory
 
 */
-class subversion::backup {
+class subversion::backup (
+  $backupdir = $subversion::backupdir,
+  $dir = $subversion::dir,
+) {
 
-  $backupdir = $subversion::backupdir
   validate_absolute_path($backupdir)
-
-  $dir = $subversion::dir
   validate_absolute_path($dir)
-
-  if ( ! $subversion_dir ) {
-    $subversion_dir = '/srv/svn'
-  }
 
   $hotbackupname = ? $::osfamily {
     'Debian' => 'svn-hot-backup',
