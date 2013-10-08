@@ -23,35 +23,40 @@ define subversion::svnrepo(
     $group='',
     $mode='',
 ) {
-    include subversion
+  include subversion
 
-    $repository_path = "${path}/${name}"
+  $repository_path = "${path}/${name}"
 
-    if $ensure == 'present' {
-      exec { "create-svn-${name}":
-          command => "/usr/bin/svnadmin create ${repository_path}",
-          creates => "${repository_path}/db",
-          user    => $owner,
-          require => [
-            File[$repository_path],
-            Package['subversion'],
-            File[$path]
-            ],
-      }
+  if $ensure == 'present' {
+    exec { "create-svn-${name}":
+      command => "/usr/bin/svnadmin create ${repository_path}",
+      creates => "${repository_path}/db",
+      user    => $owner,
+      require => [
+        File[$repository_path],
+        Package['subversion'],
+        File[$path]
+        ],
     }
+  }
 
-    file{$repository_path:
-        ensure  => $ensure ? {'absent' => 'absent', default => directory},
-        owner   => $owner ? { '' => undef, default => $owner },
-        group   => $group ? { '' => undef, default => $group },
-        mode    => $mode  ? { '' => undef, default => $mode },
-    }
+  $file_ensure = $ensure ? {'absent' => 'absent', default => directory}
+  $file_owner  = $owner ? { '' => undef, default => $owner }
+  $file_group  = $group ? { '' => undef, default => $group }
+  $file_mode   = $mode  ? { '' => undef, default => $mode }
 
-    if $ensure == 'absent' {
-      File[$repository_path] {
-        force   => true,
-        recurse => true,
-        purge   => true,
-      }
+  file{$repository_path:
+    ensure => $file_ensure,
+    owner  => $file_owner,
+    group  => $file_group,
+    mode   => $file_mode,
+  }
+
+  if $ensure == 'absent' {
+    File[$repository_path] {
+      force   => true,
+      recurse => true,
+      purge   => true,
     }
+  }
 }

@@ -1,17 +1,14 @@
-/*
-
-==Class: subversion::backup
-
-This class will add a shell script based on the utility hot-backup.py to make
-consitent backups each night.
-
-Parameters:
- $subversion_backupdir:
-   global variable that sets the backup directory
- $subversion_dir:
-   global variable that sets the base repositories directory
-
-*/
+# ==Class: subversion::backup
+#
+# This class will add a shell script based on the utility hot-backup.py to make
+# consitent backups each night.
+#
+# Parameters:
+#  $subversion_backupdir:
+#    global variable that sets the backup directory
+#  $subversion_dir:
+#    global variable that sets the base repositories directory
+#
 class subversion::backup (
   $backupdir = $subversion::backupdir,
   $dir = $subversion::dir,

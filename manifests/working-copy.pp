@@ -21,13 +21,15 @@ define subversion::working-copy(
 
   $svncmd = "/usr/bin/svn co --non-interactive ${repourl} ."
 
+  $environment = $svn_ssh ? {
+    false   => undef,
+    default => "SVN_SSH=${svn_ssh}",
+  }
+
   exec {
     "svnco-${name}":
       command     => $svncmd,
-      environment => $svn_ssh ? {
-        false   => undef,
-        default => "SVN_SSH=${svn_ssh}",
-      },
+      environment => $environment,
       cwd         => $path,
       require     => [ File[$path], Class['subversion'] ],
       creates     => "${path}/.svn",
@@ -35,10 +37,7 @@ define subversion::working-copy(
 
     "svnswitch-${name}":
       command     => "/usr/bin/svn switch ${repourl}",
-      environment => $svn_ssh ? {
-        false   => undef,
-        default => "SVN_SSH=${svn_ssh}",
-      },
+      environment => $environment,
       unless      => "/usr/bin/test `/usr/bin/svn info | /usr/bin/awk '/^URL/{print \$2}'` = '${repourl}'",
       logoutput   => true,
       cwd         => $path,
@@ -47,10 +46,7 @@ define subversion::working-copy(
     "svnupdate-${name}":
       command     => '/usr/bin/svn update',
       require     => [ Exec["svnco-${name}"], Class['subversion'] ],
-      environment => $svn_ssh ? {
-        false   => undef,
-        default => "SVN_SSH=${svn_ssh}"
-      },
+      environment => $environment,
       onlyif      => '/usr/bin/test `/usr/bin/svn status -uv --non-interactive --xml | /usr/bin/xmlstarlet sel -t -v "count(/status/target/entry/repos-status)"` -gt 0',
       cwd         => $path,
       logoutput   => 'on_failure';
