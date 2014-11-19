@@ -14,9 +14,9 @@ class subversion::base {
     stock_since => '1.0.0',
   }
 
-  $changes = $::lsbdistcodename ? {
-    default                     => 'set auth/store-auth-creds no',
-    /^(Tikanga|lenny|squeeze)$/ => 'set auth/store-password no',
+  $changes = "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+    default                       => 'set auth/store-auth-creds no',
+    /^(RedHat5|Debian5|Debian6)$/ => 'set auth/store-password no',
   }
 
   # only recent version of svn support the "store-password" option.
