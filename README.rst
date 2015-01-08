@@ -1,5 +1,5 @@
 The subversion module provides a ``subversion`` class and a
-``working-copy`` definition. It has only been tested on Debian Etch.
+``working_copy`` definition. It has only been tested on Debian Etch.
 
 **subversion** (*class*)
   Installs the ``subversion`` package. On Debian systems and its derivats 
@@ -12,11 +12,11 @@ The subversion module provides a ``subversion`` class and a
     }
 
 **subversion::xmlstarlet** (*class*)
-  Installs the ``xmlstarlet`` package, which is required for the ``working-copy``
+  Installs the ``xmlstarlet`` package, which is required for the ``working_copy``
   definition.
 
 
-**subversion::working-copy** (*definition*)
+**subversion::working_copy** (*definition*)
   Checks out a copy of the named subversion project into the specified
   directory. Keeps the working copy in sync with the repository. The
   URL that is used to check out the working copy is constructed from
@@ -44,7 +44,7 @@ The subversion module provides a ``subversion`` class and a
 
   Example::
 
-    subversion::working-copy {
+    subversion::working_copy {
       "search":
         path => "/home/search/search",
         owner => "search",

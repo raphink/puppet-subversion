@@ -1,4 +1,4 @@
-define subversion::working-copy(
+define subversion::working_copy(
   $repo_base,
   $path,
   $branch = 'trunk',
