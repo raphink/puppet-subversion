@@ -23,10 +23,10 @@ class subversion::backup (
   }
 
   file {$backupdir:
-    ensure  => directory,
-    owner   => root,
-    group   => root,
-    mode    => '0755',
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
   }
 
   file { '/usr/local/bin/subversion-backup.sh':

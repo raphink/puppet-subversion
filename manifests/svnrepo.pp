@@ -17,11 +17,11 @@
 
 # Create a new subversion repository.
 define subversion::svnrepo(
-    $ensure=present,
-    $path='/srv/svn',
-    $owner='',
-    $group='',
-    $mode='',
+    $ensure = present,
+    $path   = '/srv/svn',
+    $owner  = undef,
+    $group  = undef,
+    $mode   = undef,
 ) {
   include subversion
 
@@ -40,16 +40,16 @@ define subversion::svnrepo(
     }
   }
 
-  $file_ensure = $ensure ? {'absent' => 'absent', default => directory}
-  $file_owner  = $owner ? { '' => undef, default => $owner }
-  $file_group  = $group ? { '' => undef, default => $group }
-  $file_mode   = $mode  ? { '' => undef, default => $mode }
+  $file_ensure = $ensure ? {
+    'absent' => 'absent',
+    default  => directory,
+  }
 
   file{$repository_path:
     ensure => $file_ensure,
-    owner  => $file_owner,
-    group  => $file_group,
-    mode   => $file_mode,
+    owner  => $owner,
+    group  => $group,
+    mode   => $mode,
   }
 
   if $ensure == 'absent' {

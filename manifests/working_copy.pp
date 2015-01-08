@@ -15,7 +15,7 @@ define subversion::working_copy(
   }
 
   $repourl = $branch ? {
-    trunk   => "svn+ssh://${repo_base}/${name}/trunk",
+    'trunk' => "svn+ssh://${repo_base}/${name}/trunk",
     default => "svn+ssh://${repo_base}/${name}/branches/${branch}"
   }
 
