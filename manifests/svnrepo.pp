@@ -23,7 +23,7 @@ define subversion::svnrepo(
     $group  = undef,
     $mode   = undef,
 ) {
-  include subversion
+  include ::subversion
 
   $repository_path = "${path}/${name}"
 
